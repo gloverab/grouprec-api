@@ -1,0 +1,2 @@
+class MovieStreamingService < ApplicationRecord
+end

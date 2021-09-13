@@ -1,0 +1,2 @@
+class UserRecommendationJoin < ApplicationRecord
+end
