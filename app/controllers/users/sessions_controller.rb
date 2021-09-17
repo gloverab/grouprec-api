@@ -11,18 +11,22 @@ class Users::SessionsController < Devise::SessionsController
           id: user['id'],
           username: user['username'],
           name: user['name'],
-          email: user['email']
+          email: user['email'],
+          image: user['image'],
+          recommended_count: user.recommended_count
         },
         token: token
       }
-      render json: response.to_json
+      render json: response.to_json, status: :ok
     else
       render json: { errors: { 'email or password' => ['is invalid'] } }, status: :unprocessable_entity
     end
   end
 
   def sign_out
-    user = User.find(1)
+    user = User.find(@current_user_id)
+    puts "SUP"
+    puts user
     sign_out user
   end
 
@@ -33,7 +37,7 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def respond_to_on_destroy
-    log_out_success && return if current_user
+    log_out_success && return if @current_user
 
     log_out_failure
   end

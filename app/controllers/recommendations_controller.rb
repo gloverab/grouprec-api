@@ -7,23 +7,13 @@ class RecommendationsController < ApplicationController
     order_string = primary_sort + ", " + secondary_sort + ", " + tertiary_sort
 
     recommendations = Recommendation.all
-      .includes(:recommended_by)
+      .includes([:recommended_by, :user_recommendation_rankings])
       .order(order_string)
       
-    render json: recommendations, include:
-      [
-        recommended_by: {
-          only: [:id, :name, :username]
-        },
-        recommendation_tag_joins: {
-          include: [:tag, :added_by],
-          only: [:tag, :added_by]
-        }
-      ], status: :ok
+    render json: recommendations, status: :ok
   end
 
   def create
-
     recommendation = Recommendation.new({
       title: params['recommendation']['title'],
       medium: params['recommendation']['medium'],
@@ -31,6 +21,11 @@ class RecommendationsController < ApplicationController
       has_orion_seen: params['recommendation']['has_orion_seen'],
       ernest_rating: params['recommendation']['ernest_rating'],
       colorization: params['recommendation']['colorization'],
+      spotify_link: params['recommendation']['spotify_link'],
+      youtube_link: params['recommendation']['youtube_link'],
+      soundcloud_link: params['recommendation']['soundcloud_link'],
+      bandcamp_link: params['recommendation']['bandcamp_link'],
+      available_on: params['recommendation']['available_on'],
       recommended_by_id: @current_user_id
     })
 
@@ -60,8 +55,13 @@ class RecommendationsController < ApplicationController
     else
       render json: { error: "Recommendation didn't save." }
     end
+  end
 
-
+  def update
+    recommendation = Recommendation.find(params[:id])
+    if recommendation.update(recommendation_params)
+      render json: recommendation, status: :ok
+    end
   end
 
   def show
@@ -69,5 +69,16 @@ class RecommendationsController < ApplicationController
     render json: recommendation, include: [:recommended_by], status: :ok
   end
 
+  def destroy
+    recommendation = Recommendation.find(params[:id])
+    if recommendation.destroy
+      render json: { message: 'Recommendation has been deleted' }, status: :ok
+    end
+  end
+
   private
+
+  def recommendation_params
+    params.require(:recommendation).permit(:title, :medium, :do_journeys_cats_hate, :has_orion_seen, :colorization, :ernest_rating, :spotify_link, :bandcamp_link, :youtube_link, :soundcloud_link, :available_on)
+  end
 end

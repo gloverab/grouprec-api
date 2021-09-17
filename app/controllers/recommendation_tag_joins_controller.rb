@@ -7,7 +7,7 @@ class RecommendationTagJoinsController < ApplicationController
 
   def create
     existing = RecommendationTagJoin.where(recommendation_id: params['recommendation_id'], tag_id: params['tag_id'])
-    puts @current_user_id
+
     recommendation = RecommendationTagJoin.new({
       recommendation_id: params['recommendation_id'],
       tag_id: params['tag_id']
@@ -21,6 +21,14 @@ class RecommendationTagJoinsController < ApplicationController
   def show
     recommendation_tag_join = RecommendationTagJoin.find(params[:id])
     render json: recommendation_tag_join, include: [:recommended_by], status: :ok
+  end
+
+  def destroy
+    recommendation_tag_join = RecommendationTagJoin.find(params[:id])
+
+    if recommendation_tag_join.destroy
+      render json: { message: "Tag has been removed" }, status: :ok
+    end
   end
   
 end
