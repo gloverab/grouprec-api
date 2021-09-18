@@ -27,7 +27,7 @@ Devise.setup do |config|
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
   config.jwt do |jwt|
-    jwt.secret = '22fc135972804a39cb572206e5a5ff0b3b04aecba5450e0b529772f628cb0fc79259cc529f65273c0cc44c53188ea59a126e8be51662af1cded3cf61191db17f'
+    jwt.secret = Rails.application.credentials.devise[:jwt_secret_key]
   end
 
   # Configure the class responsible to send e-mails.
