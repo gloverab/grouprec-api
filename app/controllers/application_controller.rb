@@ -15,6 +15,7 @@ class ApplicationController < ActionController::API
   end
 
   def process_token
+    puts request.headers['Authorization']
     if request.headers['Authorization'].present?
       begin
         jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1].remove('"'), Rails.application.secrets.secret_key_base).first
