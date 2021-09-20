@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable,
          :jwt_authenticatable,
          :registerable,
+         :recoverable,
          jwt_revocation_strategy: JwtDenylist
 
   has_many :recommendations, class_name: 'Recommendation', foreign_key: :recommended_by_id

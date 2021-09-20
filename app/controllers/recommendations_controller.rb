@@ -14,20 +14,8 @@ class RecommendationsController < ApplicationController
   end
 
   def create
-    recommendation = Recommendation.new({
-      title: params['recommendation']['title'],
-      medium: params['recommendation']['medium'],
-      do_journeys_cats_hate: params['recommendation']['do_journeys_cats_hate'],
-      has_orion_seen: params['recommendation']['has_orion_seen'],
-      ernest_rating: params['recommendation']['ernest_rating'],
-      colorization: params['recommendation']['colorization'],
-      spotify_link: params['recommendation']['spotify_link'],
-      youtube_link: params['recommendation']['youtube_link'],
-      soundcloud_link: params['recommendation']['soundcloud_link'],
-      bandcamp_link: params['recommendation']['bandcamp_link'],
-      available_on: params['recommendation']['available_on'],
-      recommended_by_id: @current_user_id
-    })
+    recommendation = Recommendation.new(recommendation_params)
+    recommendation['recommended_by_id'] = @current_user_id
 
     if recommendation.save
       params['tags'].each do |t|
@@ -79,6 +67,6 @@ class RecommendationsController < ApplicationController
   private
 
   def recommendation_params
-    params.require(:recommendation).permit(:title, :medium, :do_journeys_cats_hate, :has_orion_seen, :colorization, :ernest_rating, :spotify_link, :bandcamp_link, :youtube_link, :soundcloud_link, :available_on)
+    params.require(:recommendation).permit(:title, :medium, :do_journeys_cats_hate, :has_orion_seen, :colorization, :ernest_rating, :spotify_link, :bandcamp_link, :youtube_link, :soundcloud_link, :available_on, :imdb_id, :year, :trailer_link, :image)
   end
 end

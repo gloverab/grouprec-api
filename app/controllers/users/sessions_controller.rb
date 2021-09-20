@@ -13,6 +13,7 @@ class Users::SessionsController < Devise::SessionsController
           name: user['name'],
           email: user['email'],
           image: user['image'],
+          music_streaming_preference: user['music_streaming_preference'],
           recommended_count: user.recommended_count
         },
         token: token
@@ -25,8 +26,6 @@ class Users::SessionsController < Devise::SessionsController
 
   def sign_out
     user = User.find(@current_user_id)
-    puts "SUP"
-    puts user
     sign_out user
   end
 

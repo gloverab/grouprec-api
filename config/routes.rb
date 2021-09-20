@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   devise_for :users,
     controllers: {
       sessions: 'users/sessions',
-      registrations: 'users/registrations'
+      registrations: 'users/registrations',
+      passwords: 'users/passwords'
     }
   get '/member-data', to: 'members#show'
   get '/user-watch-list', to: 'users#get_watch_list'
