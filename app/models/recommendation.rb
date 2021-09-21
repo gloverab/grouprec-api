@@ -1,5 +1,6 @@
 class Recommendation < ApplicationRecord
   belongs_to :recommended_by, class_name: 'User', foreign_key: :recommended_by_id
+  belongs_to :group
   has_many :recommendation_tag_joins
   has_many :tags, through: :recommendation_tag_joins
   has_many :season_recommendation_joins
@@ -7,6 +8,9 @@ class Recommendation < ApplicationRecord
   has_many :user_recommendation_rankings
   has_many :user_recommendation_joins
   has_many :additional_recommenders, through: :user_recommendation_joins, source: :user
+  has_many :user_recommended_for_joins
+  has_many :recommended_fors, through: :user_recommended_for_joins, class_name: 'User'
+  has_many :recommended_for_bys, through: :user_recommended_for_joins, class_name: 'User'
   
   has_many :ranked_recommendations, through: :user_recommendation_rankings, source: :recommendation do
     def to_watch
@@ -41,6 +45,9 @@ class Recommendation < ApplicationRecord
           only: [:id, :name, :username, :image]
         },
         additional_recommenders: {
+          only: [:id, :name, :username]
+        },
+        recommended_for_bys: {
           only: [:id, :name, :username]
         },
         recommendation_tag_joins: {

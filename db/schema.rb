@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_20_213426) do
+ActiveRecord::Schema.define(version: 2021_09_21_190915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.string "image"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
@@ -56,6 +63,8 @@ ActiveRecord::Schema.define(version: 2021_09_20_213426) do
     t.integer "year"
     t.string "trailer_link"
     t.string "image"
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_recommendations_on_group_id"
   end
 
   create_table "season_recommendation_joins", force: :cascade do |t|
@@ -79,6 +88,13 @@ ActiveRecord::Schema.define(version: 2021_09_20_213426) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "user_group_joins", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "group_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_recommendation_joins", force: :cascade do |t|
     t.integer "user_id"
     t.integer "recommendation_id"
@@ -93,6 +109,12 @@ ActiveRecord::Schema.define(version: 2021_09_20_213426) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "seen_status"
+  end
+
+  create_table "user_recommended_for_joins", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "recommendation_id"
+    t.integer "recommended_for_by_id"
   end
 
   create_table "users", force: :cascade do |t|

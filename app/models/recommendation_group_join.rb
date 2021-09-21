@@ -1,0 +1,2 @@
+class RecommendationGroupJoin < ApplicationRecord
+end

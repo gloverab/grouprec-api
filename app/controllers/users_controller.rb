@@ -31,6 +31,12 @@ class UsersController < ApplicationController
     render json: recommendations, status: :ok
   end
 
+  def get_recommended_for
+    recommendations = User.find(params[:user_id]).user_specific_recommendations
+
+    render json: recommendations, status: :ok
+  end
+
   def get_ranked_recommendations
     user = User.find(params[:user_id])
 

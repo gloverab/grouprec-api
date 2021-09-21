@@ -7,9 +7,18 @@ class User < ApplicationRecord
          :recoverable,
          jwt_revocation_strategy: JwtDenylist
 
+  has_many :user_group_joins
+  has_many :groups, through: :user_group_joins
   has_many :recommendations, class_name: 'Recommendation', foreign_key: :recommended_by_id
   has_many :user_recommendation_rankings
   has_many :user_recommendation_joins
+  has_many :user_recommended_for_joins
+  belongs_to :group
+
+  has_many :user_specific_recommendations, through: :user_recommended_for_joins, source: :recommendation
+
+  has_many :recommended_for_bys, through: :user_recommended_for_joins
+
   has_many :seconded_recommendations, through: :user_recommendation_joins, source: :recommendation
   has_many :ranked_recommendations, through: :user_recommendation_rankings, source: :recommendation do
     def watchlist
