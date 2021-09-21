@@ -19,7 +19,6 @@ class RecommendationsController < ApplicationController
 
     if recommendation.save
       params['tags'].each do |t|
-        puts t
         if !t['id'].present?
           tag = Tag.new({ name: t['name'], slug: t['name'].parameterize })
           if tag.save
