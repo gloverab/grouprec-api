@@ -8,6 +8,14 @@ class UsersController < ApplicationController
     render json: user, status: :ok
   end
 
+  def update
+    user = User.find(@current_user_id)
+
+    if user.update!(user_params)
+      render json: user, status: :ok
+    end
+  end
+
   def get_watch_list
     user = User.find(params[:user_id])
 
@@ -42,5 +50,11 @@ class UsersController < ApplicationController
 
     ranked_recommendations = user.ranked_recommendations
     render json: ranked_recommendations
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:name, :username, :image, :email, :discord_username, :music_streaming_preference)
   end
 end

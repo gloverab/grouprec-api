@@ -13,7 +13,6 @@ class User < ApplicationRecord
   has_many :user_recommendation_rankings
   has_many :user_recommendation_joins
   has_many :user_recommended_for_joins
-  belongs_to :group
 
   has_many :user_specific_recommendations, through: :user_recommended_for_joins, source: :recommendation
 
@@ -47,7 +46,7 @@ class User < ApplicationRecord
   end
 
   def as_json(options)
-    super(:methods => [:recommended_count])
+    super(:methods => [:recommended_count], :include => [:groups])
   end
 
   def recommended_count

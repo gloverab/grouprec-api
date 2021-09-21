@@ -6,19 +6,7 @@ class Users::SessionsController < Devise::SessionsController
 
     if user && user.valid_password?(params[:password])
       token = user.generate_jwt
-      response = {
-        user: {
-          id: user['id'],
-          username: user['username'],
-          name: user['name'],
-          email: user['email'],
-          image: user['image'],
-          music_streaming_preference: user['music_streaming_preference'],
-          recommended_count: user.recommended_count
-        },
-        token: token
-      }
-      render json: response.to_json, status: :ok
+      render json: { user: user, token: token }, status: :ok
     else
       render json: { errors: { 'email or password' => ['is invalid'] } }, status: :unprocessable_entity
     end
