@@ -10,9 +10,8 @@ class RecommendationsController < ApplicationController
     if params['category_id'].present?
       category = Category.find(params['category_id'])
       recommendations = category.recommendations
-      puts 'ALLLL'
-      puts category
-      puts recommendations
+        .includes([:recommended_by, :user_recommendation_rankings])
+        .order(order_string)
     else
       recommendations = Recommendation.all
         .includes([:recommended_by, :user_recommendation_rankings])
