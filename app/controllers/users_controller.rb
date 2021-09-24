@@ -16,6 +16,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    user = User.find(params[:user_id])
+  end
+
   def get_watch_list
     user = User.find(params[:user_id])
 

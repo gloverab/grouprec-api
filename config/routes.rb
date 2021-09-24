@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   delete '/user-seconded-recommendation/:recommendation_id/:user_id', to: 'user_recommendation_joins#destroy'
   patch '/user-recommendation-ranking', to: 'user_recommendation_rankings#update'
 
+  get '/users/:id', to: 'users#show'
   patch '/users/:id', to: 'users#update'
 
   resources :recommendations
