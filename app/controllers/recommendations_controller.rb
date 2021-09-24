@@ -4,13 +4,27 @@ class RecommendationsController < ApplicationController
     primary_sort = params['primary_sort'] || 'title'
     secondary_sort = params['secondary_sort'] || 'title'
     tertiary_sort = params['secondary_sort'] || 'title'
+
     order_string = primary_sort + ", " + secondary_sort + ", " + tertiary_sort
 
-    recommendations = Recommendation.all
-      .includes([:recommended_by, :user_recommendation_rankings])
-      .order(order_string)
-      
+    if params['category_id'].present?
+      category = Category.find(params['category_id'])
+      recommendations = category.recommendations
+      puts 'ALLLL'
+      puts category
+      puts recommendations
+    else
+      recommendations = Recommendation.all
+        .includes([:recommended_by, :user_recommendation_rankings])
+        .order(order_string)
+    end
+
+    if params['format'] != 'all'
+      recommendations = recommendations.where(format: params['format'])
+    end
+
     render json: recommendations, status: :ok
+
   end
 
   def create
@@ -37,6 +51,14 @@ class RecommendationsController < ApplicationController
           })
         end
       end
+
+      if params[:category_id]
+        CategoryRecommendationJoin.create({
+          recommendation_id: recommendation['id'],
+          category_id: params[:category_id]
+        })
+      end
+
       render json: recommendation, status: :ok
 
     else
@@ -66,6 +88,6 @@ class RecommendationsController < ApplicationController
   private
 
   def recommendation_params
-    params.require(:recommendation).permit(:title, :medium, :do_journeys_cats_hate, :has_orion_seen, :colorization, :ernest_rating, :spotify_link, :bandcamp_link, :youtube_link, :soundcloud_link, :available_on, :imdb_id, :year, :trailer_link, :image)
+    params.require(:recommendation).permit(:title, :medium, :do_journeys_cats_hate, :has_orion_seen, :colorization, :ernest_rating, :spotify_link, :apple_music_link, :group_id, :format, :bandcamp_link, :youtube_link, :soundcloud_link, :available_on, :imdb_id, :year, :trailer_link, :image, :amazon_link, :amazon_music_link, :tidal_link, :youtube_music_link, :deezer_link, :pandora_link)
   end
 end

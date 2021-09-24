@@ -1,6 +1,8 @@
 class Recommendation < ApplicationRecord
   belongs_to :recommended_by, class_name: 'User', foreign_key: :recommended_by_id
   belongs_to :group
+  has_many :category_recommendation_joins
+  has_many :categories, through: :category_recommendation_joins
   has_many :recommendation_tag_joins
   has_many :tags, through: :recommendation_tag_joins
   has_many :season_recommendation_joins

@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_21_190915) do
+ActiveRecord::Schema.define(version: 2021_09_23_192907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.integer "group_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "category_recommendation_joins", force: :cascade do |t|
+    t.integer "category_id"
+    t.integer "recommendation_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
@@ -64,6 +80,13 @@ ActiveRecord::Schema.define(version: 2021_09_21_190915) do
     t.string "trailer_link"
     t.string "image"
     t.bigint "group_id"
+    t.string "format"
+    t.string "amazon_link"
+    t.string "tidal_link"
+    t.string "youtube_music_link"
+    t.string "deezer_link"
+    t.string "pandora_link"
+    t.string "amazon_music_link"
     t.index ["group_id"], name: "index_recommendations_on_group_id"
   end
 
