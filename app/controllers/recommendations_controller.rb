@@ -1,3 +1,4 @@
+require 'net/http'
 class RecommendationsController < ApplicationController
 
   def index
@@ -24,6 +25,33 @@ class RecommendationsController < ApplicationController
 
     render json: recommendations, status: :ok
 
+  end
+
+  def fetch_links(platform, resource_type, resource_id)
+    base_url = 'https://api.song.link/v1-alpha.1/links?url='
+    if platform.present? && resource_type.present? && resource_id.present?
+      base_url.concat(params['platform'] + ':')
+      base_url.concat(params['resource_type'] + ':')
+      base_url.concat(params['resource_id'])
+      base_url.concat('&key=cf41be7b-09f9-4ac3-abea-ed4adb419d32')
+      uri = URI('https://api.song.link/v1-alpha.1/links?url=spotify:track:7pheKiMA7iqlIVRTbUEOCm')
+      res = Net::HTTP.get_response(uri)
+      if res.is_a?(Net::HTTPSuccess)
+        body = JSON(res.body)
+        return body
+      end
+    else
+      return 'error'
+    end
+  end
+
+  def get_links
+    links = fetch_links(params['platform'], params['resource_type'], params['resource_id'])
+    if links === 'error'
+      render json: { message: 'Please include all necessary fields' }, status: 400
+    else
+      render json: links['linksByPlatform'], status: :ok
+    end
   end
 
   def create

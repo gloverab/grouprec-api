@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get '/users/sign-out', to: 'users/sessions#sign_out'
   get '/group-users', to: 'groups#group_users'
   get '/categories-by-group', to: 'categories#index_by_group'
+  get '/get-links', to: 'recommendations#get_links'
   post '/user-specific-recommendations', to: 'user_recommended_for_joins#create_multiple'
 
   post '/tags/create-and-associate', to: 'tags#create_and_associate'
