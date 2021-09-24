@@ -18,6 +18,12 @@ class UsersController < ApplicationController
 
   def show
     user = User.find(params[:user_id])
+
+    if user
+      render json: user, status: :ok
+    else
+      render json: { message: "User not found" }, status: 400
+    end
   end
 
   def get_watch_list
