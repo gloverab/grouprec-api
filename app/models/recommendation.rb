@@ -40,6 +40,10 @@ class Recommendation < ApplicationRecord
     end
   end
 
+  def recommended_by_name
+    return self.recommended_by.name
+  end
+
   def as_json(options = {})
     super({
       include: [

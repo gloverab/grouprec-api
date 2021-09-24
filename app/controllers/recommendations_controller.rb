@@ -3,7 +3,7 @@ class RecommendationsController < ApplicationController
   def index
     primary_sort = params['primary_sort'] || 'title'
     secondary_sort = params['secondary_sort'] || 'title'
-    tertiary_sort = params['secondary_sort'] || 'title'
+    tertiary_sort = params['tertiary_sort'] || 'title'
 
     order_string = primary_sort + ", " + secondary_sort + ", " + tertiary_sort
 

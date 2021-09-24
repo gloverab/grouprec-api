@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_23_192907) do
+ActiveRecord::Schema.define(version: 2021_09_24_014333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2021_09_23_192907) do
     t.string "deezer_link"
     t.string "pandora_link"
     t.string "amazon_music_link"
+    t.string "recommended_by_name"
     t.index ["group_id"], name: "index_recommendations_on_group_id"
   end
 
